@@ -17,3 +17,16 @@ def fetch_airport_coordinates(icao):
                 break
             else:
                 continue
+
+def fetch_fix_coordinates(id):
+    with open(fixes, "r") as file:
+        next(file)
+        for line in file:
+            parts = line.strip().split(';')
+            if parts[0] == id.upper():
+                lat = parts[1]
+                long = parts[2]
+                print(lat, long)
+                break
+            else:
+                continue
