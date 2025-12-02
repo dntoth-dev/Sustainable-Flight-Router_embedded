@@ -1,13 +1,12 @@
 import os
-import board
-import busio
+# import board
+# import busio
 import time
 import math
 
 # Initialise UART
-uart = busio.UART(board.GP16, board.GP17, baudrate=9600, timeout=0)
-counter = 0
-
+# uart = busio.UART(board.GP16, board.GP17, baudrate=9600, timeout=0)
+# counter = 0
 
 airports = "airports_short.csv"
 fixes = "fixes_short.csv"
@@ -45,7 +44,19 @@ def fetch_fix_lat(id):
             parts = line.strip().split(';')
             if parts[0] == id.upper():
                 lat = parts[1]
-                return lat
+                # A formula converting DMS (Degrees, Minutes, Seconds) to DD (Decimal Degrees) format, because in the fixes_short.csv, coordinates are provided like that
+                prefix = ""
+                if lat[0] == 'S':
+                    prefix = '-'
+                if lat[1] != 0:
+                    deg = lat[1] + lat[2]
+                else:
+                    deg = lat[2]
+                min = lat[3] + lat[4]
+                sec = lat[5] + lat[6]
+                dec_deg = int(deg) + int(min)/60 + int(sec)/3600
+                lat_dec_deg = f"{prefix}{dec_deg}"
+                return lat_dec_deg
             else:
                 continue
             
@@ -56,7 +67,19 @@ def fetch_fix_long(id):
             parts = line.strip().split(';')
             if parts[0] == id.upper():
                 long = parts[2]
-                return long
+                # A formula converting DMS (Degrees, Minutes, Seconds) to DD (Decimal Degrees) format, because in the fixes_short.csv, coordinates are provided like that
+                prefix = ""
+                if long[0] == 'W':
+                    prefix = '-'
+                if long[1] != 0:
+                    deg = long[1] + long[2] + long[3]
+                else:
+                    deg = long[2] + long[3]
+                min = long[4] + long[5]
+                sec = long[6] + long[7]
+                dec_deg = int(deg) + int(min)/60 + int(sec)/3600
+                long_dec_deg = f"{prefix}{dec_deg}"
+                return long_dec_deg
             else:
                 continue
 # endregion
@@ -117,7 +140,7 @@ def haversine_distance_wgs84(lat1, lon1, lat2, lon2):
     distance = EARTH_RADIUS_KM * c
     
     return distance    
-    
+
 def calculate_bearing(lat1, lon1, lat2, lon2):
     lat1_rad = math.radians(lat1)
     lon1_rad = math.radians(lon1)
@@ -134,3 +157,4 @@ def calculate_bearing(lat1, lon1, lat2, lon2):
     bearing_deg = math.degrees(bearing_rad)
     
     return (bearing_deg + 360) % 360
+
