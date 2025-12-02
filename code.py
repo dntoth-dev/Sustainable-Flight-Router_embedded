@@ -1,4 +1,13 @@
 import os
+import board
+import busio
+import time
+import math
+
+# Initialise UART
+uart = busio.UART(board.GP16, board.GP17, baudrate=9600, timeout=0)
+counter = 0
+
 
 airports = "airports_short.csv"
 fixes = "fixes_short.csv"
@@ -47,4 +56,3 @@ with open(routes, "r") as file:
             if piece.isalpha(): # Exclude empty cells
                 current_route.append(piece)
         default_routes.append(current_route)
-        
