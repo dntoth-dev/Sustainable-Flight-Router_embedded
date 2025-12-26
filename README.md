@@ -1,4 +1,4 @@
-# Sustainable-Flight-Route
+# Sustainable-Flight-Router
 The goal of this project is to suggest alternative navigation paths to aircraft, to fly efficiently; reduce emissions, and lower operational costs.
 ## Note
 The project’s name is *Sustainable Flight Path*, but on GitHub it will be referred to as *Sustainable-Flight-Router* or *SFR*.
