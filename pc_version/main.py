@@ -67,3 +67,16 @@ def long(id):
     else:
         print("CoordinateError: An invalid ICAO/NAVAID was provided, or its coordinates cannot be called.")
 # endregion
+
+default_routes = []
+
+with open(routes, "r") as file:
+    next(file)
+    for line in file:
+        current_route = [p for p in line.strip().split(';') if p.isalpha()]
+        if current_route:
+            default_routes.append(current_route)
+            print("Original routes stored successfully.")
+
+deps = [r[0] for r in default_routes] # List of departure airports
+arrs = [r[-1] for r in default_routes] # List of arrival airports
